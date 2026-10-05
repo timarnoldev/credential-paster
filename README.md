@@ -63,7 +63,8 @@ Claude Code, Codex, Cursor, Gemini CLI, Copilot, OpenCode and anything else that
 | **Manual** – also puts `paste-secret` on your `PATH` | `git clone https://github.com/timarnoldev/credential-paster && ./credential-paster/install.sh` |
 
 > [!TIP]
-> Using the Claude Code plugin? Don't also select Claude Code in `npx skills add`, otherwise the skill is installed twice.
+> Restart Claude Code after installing the plugin – the paste field's tool is registered when a session starts, `/reload-plugins` is not enough.
+> Using the plugin? Don't also select Claude Code in `npx skills add`, otherwise the skill is installed twice.
 
 Optionally pick a default input method so the agent doesn't ask:
 
