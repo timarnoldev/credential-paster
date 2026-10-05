@@ -1,5 +1,8 @@
 # credential-paster
 
+[![skills.sh](https://img.shields.io/badge/skills.sh-credential--paster-black)](https://www.skills.sh/timarnoldev/credential-paster/credential-paster)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+
 An [Agent Skill](https://agentskills.io) plus a tiny CLI that lets AI coding agents (Claude Code, Codex, Cursor, Gemini CLI, …) put your API keys, tokens and passwords into config files **without the secret ever appearing** in the chat, your shell history, process arguments or tool output.
 
 The agent decides *where* the secret goes. You supply the *value* – via a native password dialog, the clipboard, a hidden terminal prompt or your password manager.
@@ -10,15 +13,23 @@ Agent: I need OPENAI_API_KEY in .env – a password dialog will open.
        OK: OPENAI_API_KEY set in .env (mode 600).
 ```
 
+**Why?** Pasting a key into the chat puts it into the transcript, the model's context and logs. A masked input for secrets [was requested for Claude Code](https://github.com/anthropics/claude-code/issues/78717) and closed as not planned – this skill fills that gap for Claude Code and every other agent that reads Agent Skills.
+
 ## Install
 
-**Claude Code (plugin):**
+**Claude Code (plugin, recommended – includes the masked paste field):**
 ```
 /plugin marketplace add timarnoldev/credential-paster
 /plugin install credential-paster@credential-paster
 ```
 
-**Any agent (script):**
+**Any agent via [skills.sh](https://www.skills.sh/timarnoldev/credential-paster/credential-paster)** (Codex, Cursor, Gemini CLI, Copilot, OpenCode, …):
+```bash
+npx skills add timarnoldev/credential-paster
+```
+The agent runs `paste-secret` from the installed skill folder. For Claude Code, prefer the plugin above instead of selecting it here, otherwise the skill is installed twice.
+
+**Any agent (script, also puts `paste-secret` on your PATH):**
 ```bash
 git clone https://github.com/timarnoldev/credential-paster
 cd credential-paster && ./install.sh
