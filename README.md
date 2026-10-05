@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🔑 credential-paster
+# credential-paster
 
 **Give your AI coding agent API keys – without giving them to the AI.**
 
@@ -27,13 +27,13 @@ When an agent needs a credential, the usual answer is to paste it into the chat.
 <tr>
 <td width="50%" valign="top">
 
-### 🙈 Never in the chat
+### Never in the chat
 The value doesn't show up in the transcript, the model's context, shell history, `ps` or tool output. The agent only ever sees `SET` / `MISSING`.
 
 </td>
 <td width="50%" valign="top">
 
-### 🧩 Any file format
+### Any file format
 `.env` out of the box. JSON, YAML, TOML, `.npmrc`, `.netrc`, connection URLs, PEM keys via placeholders, with the right escaping.
 
 </td>
@@ -41,13 +41,13 @@ The value doesn't show up in the transcript, the model's context, shell history,
 <tr>
 <td valign="top">
 
-### 🪟 Paste field in Claude Code
+### Paste field in Claude Code
 A masked input right above the prompt. Paste, Enter, done. Also: native password dialog, clipboard, hidden terminal prompt, password managers.
 
 </td>
 <td valign="top">
 
-### 🤝 Works with every agent
+### Works with every agent
 Claude Code, Codex, Cursor, Gemini CLI, Copilot, OpenCode and anything else that reads [Agent Skills](https://agentskills.io). Bash + awk only.
 
 </td>
@@ -98,11 +98,11 @@ Just ask for what you need – *"hook up the OpenAI client"*, *"add my npm token
 
 | Method | How you paste | macOS | Linux |
 |---|---|---|---|
-| **Paste field** | masked field inside Claude Code | ✅ | ✅ |
-| **Dialog** | native password dialog pops up | ✅ built-in | `zenity` / `kdialog` |
-| **Clipboard** | copy, say "ok" – cleared afterwards | ✅ built-in | `wl-paste` / `xclip` / `xsel` |
-| **Terminal** | hidden prompt in your own terminal | ✅ | ✅ |
-| **Password manager** | `op read … \| paste-secret --stdin …` | ✅ | ✅ |
+| **Paste field** | masked field inside Claude Code | yes | yes |
+| **Dialog** | native password dialog pops up | built-in | `zenity` / `kdialog` |
+| **Clipboard** | copy, say "ok" – cleared afterwards | built-in | `wl-paste` / `xclip` / `xsel` |
+| **Terminal** | hidden prompt in your own terminal | yes | yes |
+| **Password manager** | `op read … \| paste-secret --stdin …` | yes | yes |
 
 ## CLI
 
@@ -147,11 +147,11 @@ paste-secret --info                                                     # prefer
 
 ## Security
 
-- 🔒 The value reaches `awk` via the environment, never via argv – invisible in `ps`.
-- 🤐 The script never prints the value; output is file, key and status only.
-- 📋 Clipboard mode is convenient, but clipboard managers with history may keep a copy.
-- 🧱 The Claude Code paste field is built on the plugin hooks API (early access); without an interactive UI the agent falls back to the other methods.
-- 🛡️ For a hard guarantee that Claude never reads secret files, add to `~/.claude/settings.json`:
+- The value reaches `awk` via the environment, never via argv – invisible in `ps`.
+- The script never prints the value; output is file, key and status only.
+- Clipboard mode is convenient, but clipboard managers with history may keep a copy.
+- The Claude Code paste field is built on the plugin hooks API (early access); without an interactive UI the agent falls back to the other methods.
+- For a hard guarantee that Claude never reads secret files, add to `~/.claude/settings.json`:
   ```json
   { "permissions": { "deny": ["Read(**/.env)", "Read(**/.env.*)"] } }
   ```
