@@ -1,0 +1,19 @@
+{
+  "name": "credential-paster",
+  "version": "0.1.0",
+  "description": "Put API keys and other secrets into any config file without them appearing in chat, shell history or tool output.",
+  "author": {
+    "name": "Tim Arnold",
+    "email": "hello@tim-arnold.de",
+    "url": "https://github.com/timarnoldev"
+  },
+  "homepage": "https://github.com/timarnoldev/credential-paster",
+  "repository": "https://github.com/timarnoldev/credential-paster",
+  "license": "MIT",
+  "keywords": [
+    "secrets",
+    "credentials",
+    "dotenv",
+    "security"
+  ]
+}

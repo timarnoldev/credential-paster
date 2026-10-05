@@ -1,0 +1,15 @@
+{
+  "name": "credential-paster",
+  "description": "Paste secrets into config files without leaking them to AI agents.",
+  "owner": {
+    "name": "Tim Arnold",
+    "email": "hello@tim-arnold.de"
+  },
+  "plugins": [
+    {
+      "name": "credential-paster",
+      "source": "./",
+      "description": "Put API keys and other secrets into any config file without them appearing in chat, shell history or tool output."
+    }
+  ]
+}
