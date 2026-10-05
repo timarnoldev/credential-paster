@@ -13,31 +13,6 @@
 
 </div>
 
-<table>
-<tr>
-<th width="50%">Claude Code – with the paste field shown above</th>
-<th width="50%">Codex, Cursor, Gemini CLI, Copilot, …</th>
-</tr>
-<tr>
-<td valign="top">
-
-```
-/plugin marketplace add timarnoldev/credential-paster
-/plugin install credential-paster@credential-paster
-```
-
-</td>
-<td valign="top">
-
-```bash
-npx skills add timarnoldev/credential-paster
-```
-
-Secrets via password dialog, clipboard or terminal.
-
-</td>
-</tr>
-</table>
 
 <br>
 
