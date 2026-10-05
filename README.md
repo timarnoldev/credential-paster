@@ -3,6 +3,14 @@
 [![skills.sh](https://img.shields.io/badge/skills.sh-credential--paster-black)](https://www.skills.sh/timarnoldev/credential-paster/credential-paster)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
+```bash
+npx skills add timarnoldev/credential-paster            # Codex, Cursor, Gemini CLI, Copilot, …
+```
+```
+/plugin marketplace add timarnoldev/credential-paster   # Claude Code, then:
+/plugin install credential-paster@credential-paster
+```
+
 An [Agent Skill](https://agentskills.io) plus a tiny CLI that lets AI coding agents (Claude Code, Codex, Cursor, Gemini CLI, …) put your API keys, tokens and passwords into config files **without the secret ever appearing** in the chat, your shell history, process arguments or tool output.
 
 The agent decides *where* the secret goes. You supply the *value* – via a native password dialog, the clipboard, a hidden terminal prompt or your password manager.
