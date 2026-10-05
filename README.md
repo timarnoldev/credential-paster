@@ -9,13 +9,35 @@
 [![macOS | Linux](https://img.shields.io/badge/macOS_|_Linux-supported-3fb950?style=flat-square)](#cli)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 
+<img src="docs/demo.svg" alt="Claude Code asks for OPENAI_API_KEY, a masked paste field opens, the key is written to .env without entering the chat" width="760">
+
+</div>
+
+<table>
+<tr>
+<th width="50%">Claude Code – with the paste field shown above</th>
+<th width="50%">Codex, Cursor, Gemini CLI, Copilot, …</th>
+</tr>
+<tr>
+<td valign="top">
+
+```
+/plugin marketplace add timarnoldev/credential-paster
+/plugin install credential-paster@credential-paster
+```
+
+</td>
+<td valign="top">
+
 ```bash
 npx skills add timarnoldev/credential-paster
 ```
 
-<img src="docs/demo.svg" alt="Claude Code asks for OPENAI_API_KEY, a masked paste field opens, the key is written to .env without entering the chat" width="760">
+Secrets via password dialog, clipboard or terminal.
 
-</div>
+</td>
+</tr>
+</table>
 
 <br>
 
