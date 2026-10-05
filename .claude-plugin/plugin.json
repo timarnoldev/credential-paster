@@ -15,5 +15,6 @@
     "credentials",
     "dotenv",
     "security"
-  ]
+  ],
+  "types": "./types/index.d.ts"
 }

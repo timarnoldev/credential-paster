@@ -41,7 +41,9 @@ Escape modes: `json` escapes string *content* (you write the quotes); `dotenv` a
 
 ### 2. Let the user pick how to supply the value
 
-Run `paste-secret --info` once. It prints the user's preferred method (`PASTE_SECRET_METHOD`) and the methods that work in your environment.
+**Claude Code with the credential-paster plugin:** if the tool `mcp__credential-paster__request_secret` is available, prefer it. It opens a masked paste field directly in the Claude Code UI and writes the value via the script. Call it with `file` and `key` (or `placeholder` and `escape`), then **end your turn** and ask the user to paste into the field; a message arrives once it is saved or cancelled. If it is refused (no interactive UI), fall back to the methods below.
+
+Otherwise run `paste-secret --info` once. It prints the user's preferred method (`PASTE_SECRET_METHOD`) and the methods that work in your environment.
 
 - If a preference is set and available → use it without asking.
 - Otherwise ask the user which method they want and remember the answer for the rest of the session. Offer only what is available:

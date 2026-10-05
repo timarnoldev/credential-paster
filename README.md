@@ -30,6 +30,17 @@ Optional default input method (otherwise the agent asks you):
 export PASTE_SECRET_METHOD=dialog   # dialog | clipboard | tty | stdin
 ```
 
+## Paste field inside Claude Code
+
+Installed as a Claude Code plugin, credential-paster also adds a masked paste field to the Claude Code UI (terminal, desktop app, VS Code):
+
+- The agent calls the `request_secret` tool → a **Paste secret** pane opens above the prompt.
+- You paste, the field only shows `••••••`, Enter saves. The value goes to `paste-secret` via stdin – never into the transcript or the model's context.
+- The agent gets a short "saved" / "cancelled" message and continues.
+- `/paste-secret <file> <KEY>` opens the field manually, `/paste-secret` reopens a pending request.
+
+Built on Claude Code's plugin hooks API (early access). Without an interactive UI (headless, SDK hosts) the agent falls back to the methods below.
+
 ## CLI
 
 ```bash
@@ -72,6 +83,7 @@ Requirements: bash ≥ 3.2, awk, od – nothing else.
 ## Development
 
 ```bash
+claude plugin test .                                              # Claude Code UI plugin
 tests/test.sh                                                     # macOS
 docker run --rm -v "$PWD":/w -w /w debian:stable-slim bash tests/test.sh   # Linux
 ```
