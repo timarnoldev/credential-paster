@@ -108,6 +108,17 @@ describe('request_secret', () => {
     expect(JSON.stringify(res)).toContain('No interactive Claude Code UI')
   })
 
+  test('registers the tool at the next prompt when loaded into a running session', async ($, on) => {
+    const registered: string[] = []
+    on('tool.register', ($, e) => (registered.push(e.name), { value: { tool: `mcp__credential-paster__${e.name}` } }))
+    on('command.register', ($, e) => ({ value: { command: e.name } }))
+    on('prompt.submit', ($, e) => ({ text: e.text }) as never)
+    // no session.start: the plugin was installed or reloaded mid-session
+    await $.prompt.submit({ text: 'first' } as never)
+    await $.prompt.submit({ text: 'second' } as never)
+    expect(registered).toEqual(['request_secret'])
+  })
+
   test('rejects bad input', async ($, on) => {
     host(on)
     await start($, on)

@@ -1,6 +1,6 @@
 {
   "name": "credential-paster",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Put API keys and other secrets into any config file without them appearing in chat, shell history or tool output.",
   "author": {
     "name": "Tim Arnold",

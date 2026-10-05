@@ -127,8 +127,14 @@ const start = async ($: EngineInterface, r: CredentialPasterRequest): Promise<st
   return null
 }
 
-export const register: Register = on => {
-  on('session.start', async ($, e, next) => {
+// Tool and command are declared at session start. A plugin installed or
+// reloaded into a running session gets no session.start, so the next prompt
+// declares them instead. Module variables reset on reload, so this re-runs.
+let isRegistered = false
+
+const ensureRegistered = async ($: EngineInterface) => {
+  if (isRegistered) return
+  try {
     await $.tool.register({
       name: TOOL,
       description:
@@ -154,6 +160,20 @@ export const register: Register = on => {
       argumentHint: '[<file> <KEY>]',
       immediate: true,
     })
+    isRegistered = true
+  } catch {
+    // Session not bound yet: try again at the next event.
+  }
+}
+
+export const register: Register = on => {
+  on('session.start', async ($, e, next) => {
+    await ensureRegistered($)
+    return next(e)
+  })
+
+  on('prompt.submit', async ($, e, next) => {
+    await ensureRegistered($)
     return next(e)
   })
 
