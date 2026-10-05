@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="380" viewBox="0 0 900 380" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1f2329"/>
+      <stop offset="1" stop-color="#181b20"/>
+    </linearGradient>
+  </defs>
+
+  <!-- window -->
+  <rect x="0.5" y="0.5" width="899" height="379" rx="12" fill="url(#bg)" stroke="#30363d"/>
+  <circle cx="24" cy="22" r="6" fill="#ff5f57"/>
+  <circle cx="44" cy="22" r="6" fill="#febc2e"/>
+  <circle cx="64" cy="22" r="6" fill="#28c840"/>
+  <text x="450" y="27" fill="#7d8590" text-anchor="middle" font-size="12">claude — my-app</text>
+  <line x1="0" y1="44" x2="900" y2="44" stroke="#30363d"/>
+
+  <!-- conversation -->
+  <text x="28" y="78" fill="#7d8590">&gt;</text>
+  <text x="46" y="78" fill="#e6edf3">Hook up the OpenAI client</text>
+
+  <text x="28" y="112" fill="#d97757">●</text>
+  <text x="46" y="112" fill="#e6edf3">I need <tspan fill="#79c0ff">OPENAI_API_KEY</tspan> in <tspan fill="#79c0ff">.env</tspan> – please paste it into the field below.</text>
+
+  <text x="28" y="140" fill="#3fb950">●</text>
+  <text x="46" y="140" fill="#e6edf3">request_secret<tspan fill="#7d8590">(file: ".env", key: "OPENAI_API_KEY")</tspan></text>
+
+  <!-- paste pane -->
+  <rect x="28" y="162" width="844" height="118" rx="6" fill="#262c36" stroke="#a5a8ff" stroke-opacity="0.55"/>
+  <rect x="28" y="162" width="3" height="118" fill="#a5a8ff"/>
+  <text x="48" y="192" fill="#e6edf3">Paste <tspan font-weight="700">OPENAI_API_KEY in .env</tspan><tspan fill="#7d8590"> · hidden from Claude, written directly to the file</tspan></text>
+  <text x="48" y="222" fill="#e6edf3" font-weight="700">Secret:</text>
+  <text x="118" y="222" fill="#e6edf3" letter-spacing="1">••••••••••••••••••••••••••••••••••</text>
+  <rect x="438" y="208" width="9" height="18" fill="#e6edf3"/>
+  <text x="462" y="222" fill="#7d8590">⏎ save</text>
+  <text x="48" y="258" fill="#a5a8ff">[ Save ]</text>
+  <text x="128" y="258" fill="#e6edf3">[ Cancel ]</text>
+
+  <!-- result -->
+  <text x="28" y="316" fill="#3fb950">●</text>
+  <text x="46" y="316" fill="#e6edf3">OPENAI_API_KEY set in .env <tspan fill="#7d8590">(mode 600)</tspan>. The key never entered this chat.</text>
+  <text x="28" y="344" fill="#d97757">●</text>
+  <text x="46" y="344" fill="#e6edf3">Continuing: creating <tspan fill="#79c0ff">src/openai.ts</tspan> …</text>
+</svg>

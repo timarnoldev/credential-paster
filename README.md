@@ -1,66 +1,113 @@
-# credential-paster
+<div align="center">
 
-[![skills.sh](https://img.shields.io/badge/skills.sh-credential--paster-black)](https://www.skills.sh/timarnoldev/credential-paster/credential-paster)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+# 🔑 credential-paster
 
-```bash
-npx skills add timarnoldev/credential-paster            # Codex, Cursor, Gemini CLI, Copilot, …
-```
-```
-/plugin marketplace add timarnoldev/credential-paster   # Claude Code, then:
-/plugin install credential-paster@credential-paster
-```
+**Give your AI coding agent API keys – without giving them to the AI.**
 
-An [Agent Skill](https://agentskills.io) plus a tiny CLI that lets AI coding agents (Claude Code, Codex, Cursor, Gemini CLI, …) put your API keys, tokens and passwords into config files **without the secret ever appearing** in the chat, your shell history, process arguments or tool output.
+[![skills.sh](https://img.shields.io/badge/skills.sh-credential--paster-000?style=flat-square)](https://www.skills.sh/timarnoldev/credential-paster/credential-paster)
+[![Claude Code plugin](https://img.shields.io/badge/Claude_Code-plugin-d97757?style=flat-square)](#install)
+[![macOS | Linux](https://img.shields.io/badge/macOS_|_Linux-supported-3fb950?style=flat-square)](#cli)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 
-The agent decides *where* the secret goes. You supply the *value* – via a native password dialog, the clipboard, a hidden terminal prompt or your password manager.
-
-```
-Agent: I need OPENAI_API_KEY in .env – a password dialog will open.
-       $ paste-secret --dialog .env OPENAI_API_KEY
-       OK: OPENAI_API_KEY set in .env (mode 600).
-```
-
-**Why?** Pasting a key into the chat puts it into the transcript, the model's context and logs. A masked input for secrets [was requested for Claude Code](https://github.com/anthropics/claude-code/issues/78717) and closed as not planned – this skill fills that gap for Claude Code and every other agent that reads Agent Skills.
-
-## Install
-
-**Claude Code (plugin, recommended – includes the masked paste field):**
-```
-/plugin marketplace add timarnoldev/credential-paster
-/plugin install credential-paster@credential-paster
-```
-
-**Any agent via [skills.sh](https://www.skills.sh/timarnoldev/credential-paster/credential-paster)** (Codex, Cursor, Gemini CLI, Copilot, OpenCode, …):
 ```bash
 npx skills add timarnoldev/credential-paster
 ```
-The agent runs `paste-secret` from the installed skill folder. For Claude Code, prefer the plugin above instead of selecting it here, otherwise the skill is installed twice.
 
-**Any agent (script, also puts `paste-secret` on your PATH):**
-```bash
-git clone https://github.com/timarnoldev/credential-paster
-cd credential-paster && ./install.sh
-```
-Links the skill into `~/.agents/skills` (Codex, Cursor, Gemini CLI, OpenCode, …), `~/.claude/skills` and – if present – `~/.codex/skills`, and puts `paste-secret` into `~/.local/bin`. Use `--copy` to copy instead of symlink, `--uninstall` to remove.
+<img src="docs/demo.svg" alt="Claude Code asks for OPENAI_API_KEY, a masked paste field opens, the key is written to .env without entering the chat" width="760">
 
-Optional default input method (otherwise the agent asks you):
+</div>
+
+<br>
+
+When an agent needs a credential, the usual answer is to paste it into the chat. From then on it lives in the transcript, the model's context and your logs.
+
+**credential-paster** splits the job: the agent decides *where* a secret goes, you supply the *value* through a channel the agent cannot read, and a tiny script writes it straight into the file.
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+### 🙈 Never in the chat
+The value doesn't show up in the transcript, the model's context, shell history, `ps` or tool output. The agent only ever sees `SET` / `MISSING`.
+
+</td>
+<td width="50%" valign="top">
+
+### 🧩 Any file format
+`.env` out of the box. JSON, YAML, TOML, `.npmrc`, `.netrc`, connection URLs, PEM keys via placeholders, with the right escaping.
+
+</td>
+</tr>
+<tr>
+<td valign="top">
+
+### 🪟 Paste field in Claude Code
+A masked input right above the prompt. Paste, Enter, done. Also: native password dialog, clipboard, hidden terminal prompt, password managers.
+
+</td>
+<td valign="top">
+
+### 🤝 Works with every agent
+Claude Code, Codex, Cursor, Gemini CLI, Copilot, OpenCode and anything else that reads [Agent Skills](https://agentskills.io). Bash + awk only.
+
+</td>
+</tr>
+</table>
+
+## Install
+
+| Agent | Command |
+|---|---|
+| **Claude Code** – recommended, includes the paste field | `/plugin marketplace add timarnoldev/credential-paster`<br>`/plugin install credential-paster@credential-paster` |
+| **Codex, Cursor, Gemini CLI, Copilot, OpenCode, …** | `npx skills add timarnoldev/credential-paster` |
+| **Manual** – also puts `paste-secret` on your `PATH` | `git clone https://github.com/timarnoldev/credential-paster && ./credential-paster/install.sh` |
+
+> [!TIP]
+> Using the Claude Code plugin? Don't also select Claude Code in `npx skills add`, otherwise the skill is installed twice.
+
+Optionally pick a default input method so the agent doesn't ask:
+
 ```bash
 export PASTE_SECRET_METHOD=dialog   # dialog | clipboard | tty | stdin
 ```
 
-## Paste field inside Claude Code
+## How it works
 
-Installed as a Claude Code plugin, credential-paster also adds a masked paste field to the Claude Code UI (terminal, desktop app, VS Code):
+```mermaid
+sequenceDiagram
+    actor You
+    participant Agent
+    participant PS as paste-secret
+    participant File as .env / config
 
-- The agent calls the `request_secret` tool → a **Paste secret** pane opens above the prompt.
-- You paste, the field only shows `••••••`, Enter saves. The value goes to `paste-secret` via stdin – never into the transcript or the model's context.
-- The agent gets a short "saved" / "cancelled" message and continues.
-- `/paste-secret <file> <KEY>` opens the field manually, `/paste-secret` reopens a pending request.
+    Agent->>PS: request OPENAI_API_KEY for .env
+    PS->>You: masked field / password dialog
+    You-->>PS: paste secret
+    PS->>File: write value (escaped, mode 600)
+    PS-->>Agent: "OK: OPENAI_API_KEY set in .env"
+    Note over Agent: never sees the value,<br/>uses it by reference only
+```
 
-Built on Claude Code's plugin hooks API (early access). Without an interactive UI (headless, SDK hosts) the agent falls back to the methods below.
+Just ask for what you need – *"hook up the OpenAI client"*, *"add my npm token"* – the skill kicks in when a credential is missing. You can also open the field yourself in Claude Code:
+
+```
+/paste-secret .env OPENAI_API_KEY
+```
+
+## Input methods
+
+| Method | How you paste | macOS | Linux |
+|---|---|---|---|
+| **Paste field** | masked field inside Claude Code | ✅ | ✅ |
+| **Dialog** | native password dialog pops up | ✅ built-in | `zenity` / `kdialog` |
+| **Clipboard** | copy, say "ok" – cleared afterwards | ✅ built-in | `wl-paste` / `xclip` / `xsel` |
+| **Terminal** | hidden prompt in your own terminal | ✅ | ✅ |
+| **Password manager** | `op read … \| paste-secret --stdin …` | ✅ | ✅ |
 
 ## CLI
+
+<details>
+<summary><b>Examples</b></summary>
 
 ```bash
 # .env files: set KEY (file created if missing, mode 600)
@@ -79,30 +126,46 @@ paste-secret --check --placeholder __PASTE_SECRET_TOKEN__ config.json   # DONE |
 paste-secret --info                                                     # preferred + available methods
 ```
 
-Escape modes: `json` (also for double-quoted YAML/TOML strings), `dotenv`, `shell`, `url`, `none`. See `paste-secret --help`.
+</details>
 
-| Method | macOS | Linux |
+<details>
+<summary><b>Placeholders & escape modes</b></summary>
+
+| File | The agent writes | Escape |
 |---|---|---|
-| dialog | `osascript` (built-in) | `zenity` or `kdialog` + a display |
-| clipboard | `pbpaste` (built-in) | `wl-paste` (Wayland), `xclip` or `xsel` (X11) |
-| tty / stdin | ✓ | ✓ |
+| `config.json` | `"token": "__PASTE_SECRET_TOKEN__"` | `json` (auto) |
+| YAML / TOML | `token: "__PASTE_SECRET_TOKEN__"` | `json` |
+| `.npmrc` | `//registry.npmjs.org/:_authToken=__PASTE_SECRET_NPM__` | `none` |
+| `.netrc` | `machine api.x.com login me password __PASTE_SECRET_PW__` | `none` |
+| connection URL | `postgres://user:__PASTE_SECRET_DB__@host/db` | `url` |
+| shell script | `TOKEN=__PASTE_SECRET_TOKEN__` | `shell` |
+| PEM / multi-line | `__PASTE_SECRET_KEY__` on its own line | `none` |
 
-Requirements: bash ≥ 3.2, awk, od – nothing else.
+`auto` picks `json` for `*.json`, `dotenv` for `.env*`, otherwise `none`. See `paste-secret --help`.
 
-## Security notes
+</details>
 
-- The secret is passed to `awk` via the environment, never via argv, so it does not show up in `ps`.
-- The script never prints the value; output only contains file, key and status.
-- Clipboard mode is convenient but clipboard managers with history may keep a copy.
-- The skill tells the agent not to read secret files. For a hard guarantee in Claude Code, also add to `~/.claude/settings.json`:
+## Security
+
+- 🔒 The value reaches `awk` via the environment, never via argv – invisible in `ps`.
+- 🤐 The script never prints the value; output is file, key and status only.
+- 📋 Clipboard mode is convenient, but clipboard managers with history may keep a copy.
+- 🧱 The Claude Code paste field is built on the plugin hooks API (early access); without an interactive UI the agent falls back to the other methods.
+- 🛡️ For a hard guarantee that Claude never reads secret files, add to `~/.claude/settings.json`:
   ```json
   { "permissions": { "deny": ["Read(**/.env)", "Read(**/.env.*)"] } }
   ```
 
+## Why
+
+A masked input for secrets [was requested for Claude Code](https://github.com/anthropics/claude-code/issues/78717) and closed as not planned. credential-paster fills that gap – for Claude Code and every other agent.
+
 ## Development
 
 ```bash
-claude plugin test .                                              # Claude Code UI plugin
-tests/test.sh                                                     # macOS
-docker run --rm -v "$PWD":/w -w /w debian:stable-slim bash tests/test.sh   # Linux
+claude plugin test .                                                        # Claude Code plugin
+tests/test.sh                                                               # CLI on macOS
+docker run --rm -v "$PWD":/w -w /w debian:stable-slim bash tests/test.sh   # CLI on Linux
 ```
+
+<div align="center"><sub>MIT © <a href="https://github.com/timarnoldev">Tim Arnold</a></sub></div>
